@@ -1,0 +1,23 @@
+{% extends 'homepage/style.html' %}
+{% block content %}
+<body>
+
+<br><br><br><br>
+        <h1 align="center">הוסף עבודה</h1>
+<br><br>
+    <div class="row align-items-center justify-content-center">
+
+        <form method="POST">
+        {% csrf_token %}
+            {{ error }}
+            {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">הוסף</button>
+        </form>
+
+    </div>
+
+    </body>
+{% endblock %}
+
+
