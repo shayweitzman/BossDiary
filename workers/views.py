@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from workers.models import Worker, Job as job
+from workers.models import Worker,Payment as paymentmodel ,Job as job
 from workers.forms import JobForm,ReduceHrs,Payment
 import datetime
 # from django.contrib.auth.decorators import login_required
@@ -16,7 +16,6 @@ def ReduceHrs1(request):
             newForm = form.save(commit=False)
             newForm.save()
             form.save_m2m()
-            print(newForm.name)
             updatehrs(newForm)
             newForm.delete()
             return redirect("reducehrs")
@@ -31,8 +30,6 @@ def updatehrs(form_ins):
             worker1.total_hours -= form_ins.total_hours
             worker1.total_money -= form_ins.total_hours * 20
             worker1.own -= form_ins.total_hours * 20
-            print(worker1.own)
-            print(worker1.total_hours)
             worker1.save()
 
 def Job(request):
@@ -45,7 +42,6 @@ def Job(request):
             newForm = form.save(commit=False)
             newForm.save()
             form.save_m2m()
-            print(newForm.name)
             updateall(newForm)
             return redirect("addjob")
         else:
@@ -57,8 +53,6 @@ def updateall(form_ins):
         worker1.total_hours += form_ins.total_hours
         worker1.total_money += form_ins.total_hours*20
         worker1.own += form_ins.total_hours * 20
-        print(worker1.own)
-        print(worker1.total_hours)
         worker1.save()
 
 
@@ -72,7 +66,6 @@ def Payment1(request):
             newForm = form.save(commit=False)
             newForm.save()
             form.save_m2m()
-            print(newForm.name)
             updatepayment(newForm)
             newForm.delete()
             return redirect("payment")
@@ -82,8 +75,11 @@ def Payment1(request):
 
 def updatepayment(form_ins):
     jobs = job.objects.filter(name=form_ins.name)
+    payment = paymentmodel(money=form_ins.money)
+    payment.save()
     for worker1 in jobs[0].workers.all():
         worker1.paid += form_ins.money
         worker1.own = worker1.total_money-worker1.paid
         worker1.date=datetime.datetime.now()
+        worker1.payments.add(payment)
         worker1.save()

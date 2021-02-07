@@ -15,3 +15,8 @@ class Payment(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['money','workers']
+
+# class PaymentsHistory(forms.ModelForm):
+#     class Meta:
+#         model = Payment
+#         fields = ['money','date']

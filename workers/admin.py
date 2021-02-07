@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from workers.models import Worker,Job
+from workers.models import Worker,Job,Payment
 
 # class WorkerAdmin(admin.ModelAdmin):
 #     search_fields = ['name','author_name','key_words','genre','Grade',]
@@ -12,4 +12,5 @@ from workers.models import Worker,Job
 
 admin.site.register(Worker)
 admin.site.register(Job)
+admin.site.register(Payment)
 # Register your models here.
