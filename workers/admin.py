@@ -2,15 +2,16 @@
 from django.contrib import admin
 from workers.models import Worker,Job,Payment
 
-# class WorkerAdmin(admin.ModelAdmin):
-#     search_fields = ['name','author_name','key_words','genre','Grade',]
-#     list_display = ('name','author_name','genre','Grade','key_words',)
-#
-# class AudioBookAdmin(admin.ModelAdmin):
-#     search_fields = ['name', 'key_words', 'genre']
-#     list_display = ('name', 'genre', 'key_words',)
+class WorkerAdmin(admin.ModelAdmin):
+    list_display = ('name','date','total_hours','total_money','own','paid')
 
-admin.site.register(Worker)
-admin.site.register(Job)
-admin.site.register(Payment)
-# Register your models here.
+class JobAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date', 'total_hours','money')
+
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('date', 'money')
+
+admin.site.register(Worker,WorkerAdmin)
+admin.site.register(Job,JobAdmin)
+admin.site.register(Payment,PaymentAdmin)
+

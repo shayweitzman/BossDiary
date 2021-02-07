@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-              <title>AutoBook</title>
+              <title>Boss Diary</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,15 +24,15 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link text-primary" href="{% url "homepage" %}">Home <span class="sr-only" href="{% url "homepage" %}">Home</span></a>
+        <a class="nav-link text-primary" href="{% url "homepage" %}">דף הבית <span class="sr-only" href="{% url "homepage" %}">דף הבית</span></a>
       </li>
-      <li class="nav-item"  href="{% url "homepage" %}">
-        <a class="nav-link text-primary text size-12" href="{% url "homepage" %}">Books Catalog</a>
+      <li class="nav-item"  href="{% url "reports" %}">
+        <a class="nav-link text-primary text size-12" href="{% url "reports" %}">דוחות</a>
       </li>
 
 
-      <li class="nav-item" href="{% url "homepage" %}">
-        <a class="nav-link text-primary" href="{% url 'homepage' %}">Simple Mode</a>
+      <li class="nav-item" href="{% url "admin:index" %}">
+        <a class="nav-link text-primary" href="{% url 'admin:index' %}">פאנל ניהול</a>
       </li>
 <li class="nav-item" href="{% url "homepage" %}">
         <a class="nav-link text-primary" href="{% url 'homepage' %}">Contact Us</a>

@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404,redirect
 from workers.models import Worker,Payment as paymentmodel ,Job as job
 from workers.forms import JobForm,ReduceHrs,Payment
 import datetime
-# from django.contrib.auth.decorators import login_required
-#
-# @login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
+
+
+@staff_member_required
 def ReduceHrs1(request):
     jobs = job.objects.all()
     if request.method == "GET":
@@ -22,7 +23,7 @@ def ReduceHrs1(request):
         else:
             return render(request, 'reducehrs/reducehrs.html', {'jobs': jobs, "form": ReduceHrs(), "error": "Not Good"})
 
-
+@staff_member_required
 def updatehrs(form_ins):
     jobs = job.objects.filter(name=form_ins.name)
     for worker1 in jobs[0].workers.all():
@@ -32,6 +33,7 @@ def updatehrs(form_ins):
             worker1.own -= form_ins.total_hours * 20
             worker1.save()
 
+@staff_member_required
 def Job(request):
     jobs = job.objects.all()
     if request.method == "GET":
@@ -47,6 +49,7 @@ def Job(request):
         else:
             return render(request, 'addwork/addwork.html', {'jobs': jobs, "form": JobForm(),"error":"Not Good"})
 
+@staff_member_required
 def updateall(form_ins):
     jobs= job.objects.filter(name=form_ins.name)
     for worker1 in jobs[0].workers.all():
@@ -55,7 +58,7 @@ def updateall(form_ins):
         worker1.own += form_ins.total_hours * 20
         worker1.save()
 
-
+@staff_member_required
 def Payment1(request):
     jobs = job.objects.all()
     if request.method == "GET":
@@ -72,7 +75,7 @@ def Payment1(request):
         else:
             return render(request, 'payment/payment.html', {'jobs': jobs, "form": Payment(), "error": "Not Good"})
 
-
+@staff_member_required
 def updatepayment(form_ins):
     jobs = job.objects.filter(name=form_ins.name)
     payment = paymentmodel(money=form_ins.money)

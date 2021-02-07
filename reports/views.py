@@ -1,17 +1,22 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from workers.models import Job,Worker
-import datetime
+
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
 
+@staff_member_required
 def reports1(request):
     return render(request,'reports/reports.html')
 
+@staff_member_required
 def paymentreport(request):
     workers=Worker.objects.all()
     return render(request,'reports/paymentsreport.html',{"workers":workers[::-1]})
 
+
+@staff_member_required
 def jobspermonth(request):
     switch=1
     jobs=Job.objects.all()

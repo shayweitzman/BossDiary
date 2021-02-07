@@ -7,8 +7,8 @@ class Payment(models.Model):
     money = models.FloatField(max_length=50)
     date = models.DateField(default=datetime.datetime.now(), null=True, blank=True)
 
-    # def __str__(self):
-    #     return self.date
+    def __str__(self):
+        return str(self.date)
 
 
 class Worker (models.Model):
