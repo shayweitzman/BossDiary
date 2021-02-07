@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from homepage import views as homepage_views
 from workers import views as workers_views
-
+from reports import views as reports_views
 
 urlpatterns = [
     path('admin', admin.site.urls),
@@ -27,8 +27,8 @@ urlpatterns = [
     path('addjob/',workers_views.Job,name='addjob'),
     path('reducehrs/',workers_views.ReduceHrs1,name='reducehrs'),
     path('Payment/',workers_views.Payment1,name='payment'),
-    path('Reports/',workers_views.Payment1,name='reports'),
-
+    path('Reports/',reports_views.reports1,name='reports'),
+    path('jobspermonth/',reports_views.jobspermonth,name='jobspermonth'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
