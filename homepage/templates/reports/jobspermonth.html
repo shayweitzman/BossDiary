@@ -62,7 +62,7 @@ tr:nth-child(even) {
             <option value=2022>2022</option>
 
 </select><br><br>
-<input type="submit" class="btn btn-success" value="Submit">
+<input type="submit" class="btn btn-success" value="הצג">
 </form>
 {% else %}
     {% if jobs %}
@@ -77,7 +77,7 @@ tr:nth-child(even) {
       <th>כסף</th>
       <th>שעות</th>
       <th>תאריך</th>
-      <th>שם</th>
+      <th>תיאור עבודה</th>
   </tr>
   <tr>
     {% for job in jobs %}
@@ -100,12 +100,16 @@ tr:nth-child(even) {
         אין עבודות בתאריך זה
         {% endif %}
 {% endif %}
-
+<br>
+<a href={% url 'reports' %}><button class="btn btn-primary">חזור לדוחות</button></a>
+<br>
+<br>
+<br>
 </div>
 
 
 
 </body>
 </html>
-{#<a href={% url 'meadminpage' %}><button class="btn btn-primary">Back</button></a>#}
+
 {% endblock %}

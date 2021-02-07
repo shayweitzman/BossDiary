@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from workers.models import Worker, Job as job
 from workers.forms import JobForm,ReduceHrs,Payment
+import datetime
 # from django.contrib.auth.decorators import login_required
 #
 # @login_required
@@ -84,4 +85,5 @@ def updatepayment(form_ins):
     for worker1 in jobs[0].workers.all():
         worker1.paid += form_ins.money
         worker1.own = worker1.total_money-worker1.paid
+        worker1.date=datetime.datetime.now()
         worker1.save()

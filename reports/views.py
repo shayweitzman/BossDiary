@@ -8,6 +8,10 @@ import datetime
 def reports1(request):
     return render(request,'reports/reports.html')
 
+def paymentreport(request):
+    workers=Worker.objects.all()
+    return render(request,'reports/paymentsreport.html',{"workers":workers[::-1]})
+
 def jobspermonth(request):
     switch=1
     jobs=Job.objects.all()

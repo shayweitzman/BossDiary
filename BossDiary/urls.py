@@ -29,6 +29,7 @@ urlpatterns = [
     path('Payment/',workers_views.Payment1,name='payment'),
     path('Reports/',reports_views.reports1,name='reports'),
     path('jobspermonth/',reports_views.jobspermonth,name='jobspermonth'),
+    path('payments/',reports_views.paymentreport,name='paymentreport')
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
