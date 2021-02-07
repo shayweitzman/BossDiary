@@ -22,20 +22,27 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link text-primary" href="{% url "homepage" %}">דף הבית <span class="sr-only" href="{% url "homepage" %}">דף הבית</span></a>
-      </li>
-      <li class="nav-item"  href="{% url "reports" %}">
-        <a class="nav-link text-primary text size-12" href="{% url "reports" %}">דוחות</a>
-      </li>
-
-
-      <li class="nav-item" href="{% url "admin:index" %}">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item" href="{% url "admin:index" %}">
         <a class="nav-link text-primary" href="{% url 'admin:index' %}">פאנל ניהול</a>
       </li>
-<li class="nav-item" href="{% url "homepage" %}">
-        <a class="nav-link text-primary" href="{% url 'homepage' %}">Contact Us</a>
+        <li class="nav-item" href="{% url "addworker" %}">
+        <a class="nav-link text-primary" href="{% url 'addworker' %}">הוספת עובד</a>
+      </li>
+        <li class="nav-item" href="{% url "reducehrs" %}">
+        <a class="nav-link text-primary" href="{% url 'reducehrs' %}">הורדת שעות</a>
+      </li>
+        <li class="nav-item" href="{% url "payment" %}">
+        <a class="nav-link text-primary" href="{% url 'payment' %}">תשלום</a>
+      </li>
+        <li class="nav-item" href="{% url "addjob" %}">
+        <a class="nav-link text-primary" href="{% url 'addjob' %}">הוסף עבודה</a>
+      </li>
+        <li class="nav-item"  href="{% url "reports" %}">
+        <a class="nav-link text-primary text size-12" href="{% url "reports" %}">דוחות</a>
+      </li>
+        <li class="nav-item active">
+        <a class="nav-link text-primary" href="{% url "homepage" %}">דף הבית <span class="sr-only" href="{% url "homepage" %}">דף הבית</span></a>
       </li>
      </ul>
   </div>

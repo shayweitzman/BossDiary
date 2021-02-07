@@ -6,6 +6,11 @@ class JobForm(forms.ModelForm):
         model = Job
         fields = ['name','date','total_hours','money','workers']
 
+class WorkerForm(forms.ModelForm):
+    class Meta:
+        model = Worker
+        fields = ['name']
+
 class ReduceHrs(forms.ModelForm):
     class Meta:
         model = Job
@@ -14,9 +19,5 @@ class ReduceHrs(forms.ModelForm):
 class Payment(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['money','workers']
+        fields = ['name','money','workers']
 
-# class PaymentsHistory(forms.ModelForm):
-#     class Meta:
-#         model = Payment
-#         fields = ['money','date']

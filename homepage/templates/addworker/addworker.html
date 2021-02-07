@@ -1,0 +1,26 @@
+{% extends 'homepage/style.html' %}
+{% block content %}
+<body>
+
+<br><br><br><br>
+        <h1 align="center">הוסף עובד</h1>
+<br><br>
+    <div class="row align-items-center justify-content-center">
+
+        <form method="POST">
+        {% csrf_token %}
+            <h3 style="color: red">{{ error }}</h3>
+            {{ form.as_p }}
+
+        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<button type="submit" class="btn btn-primary">הוסף עובד</button>
+
+        </form>
+    </div>
+<br><br>
+    <div class="row align-items-center justify-content-center">
+<a href={% url 'homepage' %}><button class="btn btn-primary">חזור לדף הבית</button></a>
+    </div>
+    </body>
+{% endblock %}
+
+

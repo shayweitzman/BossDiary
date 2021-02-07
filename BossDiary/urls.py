@@ -25,12 +25,15 @@ urlpatterns = [
     path('admin', admin.site.urls),
     path('', homepage_views.homepage, name='homepage'),
     path('addjob/',workers_views.Job,name='addjob'),
+    path('addworker/',workers_views.AddWorker,name='addworker'),
     path('reducehrs/',workers_views.ReduceHrs1,name='reducehrs'),
     path('Payment/',workers_views.Payment1,name='payment'),
     path('Reports/',reports_views.reports1,name='reports'),
     path('jobspermonth/',reports_views.jobspermonth,name='jobspermonth'),
     path('payments/',reports_views.paymentreport,name='paymentreport'),
     path('jobspermonth/',reports_views.jobspermonth,name='jobspermonth'),
+    path('paymentspermonth/',reports_views.paymentspermonth,name='paymentspermonth'),
+    path('paymentsperworker/',reports_views.paymentperworker,name='paymentperworker'),
 
 
 ]

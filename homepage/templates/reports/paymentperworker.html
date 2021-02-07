@@ -29,17 +29,25 @@ tr:nth-child(even) {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <div class="container text-center">
 <br>
-<h1 align="right">עבודות לפי חודש</h1>
+<h1 align="right">תשלומים לפי שם</h1>
 <br>
 <br>
 
 {% if switch == 1 %}
 <form method="POST">
 {% csrf_token %}
+    <h3>בחר עובד</h3>
+    <br>
+<select name="worker" >
+    {% for worker in workers %}
+
+            <option value={{ worker.name }}>{{ worker.name }}</option>
+{% endfor %}
+</select>
 <h3>בחר חודש</h3>
 
 <select name="month" >
-            <option value={{ todaymonth }} selected="selected">{{ todaymonth }}</option>
+            <option value='all' selected="selected">הכל</option>
             <option value=1>1</option>
             <option value=2>2</option>
             <option value=3>3</option>
@@ -56,40 +64,56 @@ tr:nth-child(even) {
     <h3>בחר שנה</h3>
     <br>
 <select name="year" >
-        <option value="" selected disabled hidden></option>
-    <option value={{ todayyear }} selected="selected">{{ todayyear }}</option>
-            <option value=2020>2020</option>
+        <option value='all' selected="selected">הכל</option>
+              <option value=2020>2020</option>
             <option value=2021>2021</option>
             <option value=2022>2022</option>
+            <option value=2023>2023</option>
 
 </select><br><br>
 <input type="submit" class="btn btn-success" value="הצג">
 </form>
 {% else %}
-    {% if jobs %}
+    {% if payments %}
+        {% if month == 'all' %}
+        <h2>
+       חודש: הכל
+        </h2>
+            {% else %}
         <h2>
        חודש: {{ month }}
+        </h2>
+            {% endif %}
+            <br>
+       {% if year == 'all' %}
+        <h2>
+       שנה: הכל
+        </h2>
+            {% else %}
+        <h2>
+       שנה: {{ year }}
+        </h2>
+            {% endif %}
+<br>
+<h2> ₪ סך הכל שולם ל{{ worker }} בתקופה שבחרת : {{ totalamount }} </h2>
         <br>
-        שנה: {{ year }}
-        <br></h2>
+
         <table>
   <tr>
     <th>עובדים</th>
       <th>כסף</th>
-      <th>שעות</th>
       <th>תאריך</th>
-      <th>תיאור עבודה</th>
+      <th>תיאור תשלום</th>
   </tr>
   <tr>
-    {% for job in jobs %}
-        <td>{% for worker in job.workers.all %}
+    {% for payment in payments %}
+        <td>{% for worker in payment.workers.all %}
              {{ worker.name }},
              {% endfor %}
              </td>
-    <td> {{ job.money }}</td>
-    <td> {{ job.total_hours }}</td>
-         <td>{{  job.date  }}</td>
-        <td>{{ job.name }}</td>
+    <td> {{ payment.money }}</td>
+         <td>{{  payment.date  }}</td>
+        <td>{{ payment.name }}</td>
   </tr>
     {% endfor %}
 
@@ -98,9 +122,14 @@ tr:nth-child(even) {
 </table><br><br>
 
         {% else %}
-        אין עבודות בתאריך זה
+        <h1>
+        אין תשלומים בתאריך זה
+        </h1>
         {% endif %}
+
 {% endif %}
+<br>
+
 <br>
 <a href={% url 'reports' %}><button class="btn btn-primary">חזור לדוחות</button></a>
 <br>

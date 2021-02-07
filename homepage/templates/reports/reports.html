@@ -49,7 +49,17 @@ tr:nth-child(even) {
   </tr>
     <tr>
       <td><a href={% url 'paymentreport' %}><button class="btn btn-primary">GO</button></a></td>
-    <td><h2>דו"ח תשלום לעובדים </h2></td>
+    <td><h2>דו"ח חשבון לעובדים </h2></td>
+
+  </tr>
+    <tr>
+      <td><a href={% url 'paymentspermonth' %}><button class="btn btn-primary">GO</button></a></td>
+    <td><h2>דו"ח תשלומים לפי חודש </h2></td>
+
+  </tr>
+    <tr>
+      <td><a href={% url 'paymentperworker' %}><button class="btn btn-primary">GO</button></a></td>
+    <td><h2>דו"ח תשלומים לפי שם </h2></td>
 
   </tr>
 

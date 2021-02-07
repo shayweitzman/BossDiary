@@ -2,26 +2,18 @@
 {% block content %}
 <body>
 
-<br><br><br><br><br><br><br>
-    <div class="row align-items-center justify-content-center">
-        <table class="tittle text-center">
-
-            <tr>
-                <td>
-                    <a href="{% url "addjob" %}"> <input type="submit" value="הוסף עבודה" style="font-size : 60px;height:150px; width:400px" class="btn btn-success"></a>
-                </td>
-                <td>
+<br><br><br>
+    <br><br>
+                   <center> <a href="{% url "addjob" %}"> <input type="submit" value="הוסף עבודה" style="font-size : 60px;height:150px; width:400px" class="btn btn-success"></a>
+            <br><br>
                     <a href="{% url "reducehrs" %}"><input type="submit" value="להוריד שעות" style="font-size : 60px;height:150px; width:400px" class="btn btn-danger"></a>
-                </td>
-                <td>
+                <br><br>
                     <a href="{% url "payment" %}"><input type="submit" value="תשלום" style="font-size : 60px;height:150px; width:400px" class="btn btn-primary"></a>
-                </td>
-                <td>
+                <br><br>
                     <a href="{% url "reports" %}"><input type="submit" value="דוחות" style="font-size : 60px;height:150px; width:400px" class="btn btn-warning"></a>
-                </td>
-            </tr>
-        </table>
-    </div>
+                <br><br>
+                    <a href="{% url "addworker" %}"><input type="submit" value="הוסף עובד" style="font-size : 60px;height:150px; width:400px" class="btn btn-info"></a></center>
+                <br><br>
 
     </body>
 {% endblock %}

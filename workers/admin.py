@@ -9,7 +9,7 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ('name', 'date', 'total_hours','money')
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('date', 'money')
+    list_display = ('name','date', 'money')
 
 admin.site.register(Worker,WorkerAdmin)
 admin.site.register(Job,JobAdmin)
