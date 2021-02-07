@@ -3,7 +3,7 @@
 <body>
 
 <br><br><br><br>
-        <h1 align="center">להוריד שעות לעובד</h1>
+        <h1 align="center">הוספה לעבודה קיימת</h1>
 <br><br>
     <div class="row align-items-center justify-content-center">
 
@@ -17,11 +17,10 @@
 {% endfor %}
 </select></center><br><br>
         {% csrf_token %}
-            <h2 style="color: red">{{ error }}</h2></center><br>
+           <center> <h2 style="color: red">{{ error }}</h2><br>
             {{ form.as_p }}
 
-        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<button type="submit" class="btn btn-primary">אישור</button><center>
-
+        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<button type="submit" class="btn btn-primary">אישור</button></center>
         </form>
     </div>
 <br><br>

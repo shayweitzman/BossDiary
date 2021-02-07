@@ -4,7 +4,13 @@ from django import forms
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['name','date','total_hours','money','workers']
+        fields = ['name','date','total_hours','Money_For_Hour','money','workers']
+
+class AddHrsAndWorkers(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ['total_hours','Money_For_Hour','money','workers']
+
 
 class WorkerForm(forms.ModelForm):
     class Meta:

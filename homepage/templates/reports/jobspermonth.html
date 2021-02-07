@@ -1,4 +1,5 @@
 {% extends "homepage/style.html" %}
+{% load mathfilters %}
 {% block content %}
     <br>
     <br>
@@ -56,7 +57,6 @@ tr:nth-child(even) {
     <h3>בחר שנה</h3>
     <br>
 <select name="year" >
-        <option value="" selected disabled hidden></option>
     <option value={{ todayyear }} selected="selected">{{ todayyear }}</option>
             <option value=2020>2020</option>
             <option value=2021>2021</option>
@@ -75,8 +75,11 @@ tr:nth-child(even) {
         <table>
   <tr>
     <th>עובדים</th>
-      <th>כסף</th>
-      <th>שעות</th>
+      <th>עלות עובדים</th>
+      <th>כמה נשאר</th>
+      <th>כמה קיבלתי</th>
+      <th>צריך לקבל</th>
+      <th>שעות סך הכל</th>
       <th>תאריך</th>
       <th>תיאור עבודה</th>
   </tr>
@@ -86,8 +89,11 @@ tr:nth-child(even) {
              {{ worker.name }},
              {% endfor %}
              </td>
+        <td> {{ job.all_hours|mul:"20"  }}</td>
+        <td> {{ job.left }}</td>
     <td> {{ job.money }}</td>
-    <td> {{ job.total_hours }}</td>
+        <td> {{ job.total_amount }}</td>
+    <td> {{ job.all_hours }}</td>
          <td>{{  job.date  }}</td>
         <td>{{ job.name }}</td>
   </tr>

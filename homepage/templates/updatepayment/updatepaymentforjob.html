@@ -1,0 +1,71 @@
+{% extends "homepage/style.html" %}
+{% block content %}
+    <br>
+    <br>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: right;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #E0FFFF;
+}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<div class="container text-center">
+<br>
+<h1 align="right">עדכון תשלום עבור עבודה</h1>
+<br>
+<br>
+
+{% if switch == 1 %}
+<form method="POST">
+{% csrf_token %}
+    <h3>בחר עבודה</h3>
+
+<select name="job" >
+    {% for job in jobs %}
+
+            <option value={{ job.id }}>{{ job.name }}</option>
+{% endfor %}
+</select><br><br>
+<textarea name="amount" >?כמה להוסיף</textarea>
+<br><br>
+    <input type="submit" class="btn btn-success" value="עדכן">
+</form>
+    <br>
+<h2 style="color: limegreen">{{ msg }}</h2>
+<br>
+{% else %}
+
+{% endif %}
+<br>
+
+<br>
+<a href={% url 'homepage' %}><button class="btn btn-primary">חזור</button></a>
+<br>
+<br>
+<br>
+</div>
+<br>
+
+
+</body>
+</html>
+
+{% endblock %}

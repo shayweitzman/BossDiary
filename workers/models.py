@@ -30,7 +30,12 @@ class Job(models.Model):
     name = models.CharField(max_length=50)
     date = models.DateField(default=datetime.datetime.now(), null=True, blank=True)
     total_hours=models.FloatField(default=0,null=True,blank=True)
+    all_hours = models.FloatField(default=0, null=True, blank=True)
     money = models.FloatField(default=0, null=True, blank=True)
+    total_amount = models.FloatField(default=0, null=True, blank=True)
+    left = models.FloatField(default=0, null=True, blank=True)
+    Money_For_Hour=models.FloatField(default=40, null=True, blank=True)
+
     workers = models.ManyToManyField(Worker, blank=True, related_name='workerjobs')
 
     def __str__(self):
