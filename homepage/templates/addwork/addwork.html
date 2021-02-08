@@ -9,10 +9,10 @@
 
         <form method="POST">
         {% csrf_token %}
-            {{ error }}
+            <center><h2 style="color: red">{{ error }}</h2>
             {{ form.as_p }}
 
-        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<button type="submit" class="btn btn-primary">הוסף עבודה</button>
+                &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<button type="submit" class="btn btn-primary">הוסף עבודה</button></center>
 
         </form>
     </div>

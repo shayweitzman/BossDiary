@@ -11,6 +11,57 @@ from django.contrib.admin.views.decorators import staff_member_required
 def reports1(request):
     return render(request,'reports/reports.html')
 
+
+@staff_member_required
+def jobsperuser(request):
+    switch = 1
+    workers = Worker.objects.all()
+    jobs= Job.objects.all()
+    if request.method == "GET":
+        return render(request, 'reports/jobsperuser.html', {"switch": switch, "workers": workers[::-1]})
+    else:
+        switch=0
+        res=[]
+        res1=()
+        worker1=request.POST.get('worker')
+        month = request.POST.get('month')
+        year = request.POST.get('year')
+        worker1=Worker.objects.filter(name=worker1)
+        worker1=worker1[0]
+        if month=='all':
+            if year=='all':
+                for job6 in jobs:
+                    if worker1 in job6.workers.all() :
+                        res1=[job6,2]
+                        for job7 in worker1.jobchange.all():
+                            if job7.name==job6.name:
+                                res1[1]=job7.changehours
+                                res.append(res1)
+            else:
+                for job6 in jobs:
+                    if int(job6.date.year) == int(year):
+                        if worker1 in job6.workers.all():
+                            res1 = [job6, 2]
+                            for job7 in worker1.jobchange.all():
+                                if job7.name == job6.name:
+                                    res1[1] = job7.changehours
+                                    res.append(res1)
+        else:
+            for job6 in jobs:
+                if int(job6.date.month) == int(month):
+                    if worker1 in job6.workers.all():
+                        res1 = [job6, 2]
+                        for job7 in worker1.jobchange.all():
+                            if job7.name == job6.name:
+                                res1[1] = job7.changehours
+                                res.append(res1)
+        sumhours=0
+        for i in res:
+            sumhours+=i[1]
+        totalamount=20*sumhours
+        return render(request, 'reports/jobsperuser.html', {"switch": switch,"worker":worker1,"jobs":res[::-1],"totalamount":totalamount,"month":month,"year":year})
+
+
 @staff_member_required
 def paymentperworker(request):
     switch=1

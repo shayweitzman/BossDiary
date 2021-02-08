@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from workers.models import Worker as worker ,Payment as paymentmodel ,Job as job
+from workers.models import Worker as worker ,Payment as paymentmodel ,Job as job,ChangeJob
 from workers.forms import JobForm,ReduceHrs,Payment,WorkerForm,AddHrsAndWorkers
 import datetime
 from django.contrib.admin.views.decorators import staff_member_required
@@ -17,7 +17,7 @@ def addhrsandworkers(request):
             form.save_m2m()
             job1 = request.POST.get('job')
             selectedjob = job.objects.filter(id=job1)
-            updatehrs3(newForm)
+            updatehrs3(newForm,selectedjob[0])
             totaladdhrs = newForm.total_hours * len(newForm.workers.all())
             for jobb in selectedjob:
                 jobb.all_hours += totaladdhrs
@@ -36,18 +36,23 @@ def addhrsandworkers(request):
             return render(request, 'addhrsandworkers/addhrsandworkers.html', {'jobs': jobs[::-1], "form": AddHrsAndWorkers(), "error": "Not Good"})
 
 
-def updatehrs3(form_ins):
+def updatehrs3(form_ins,selectedjob):
     jobs = job.objects.filter(name=form_ins.name)
     for worker1 in jobs[0].workers.all():
+        for job2 in worker1.jobchange.all():
+            if job2.name == selectedjob.name:
+                job2.changehours += form_ins.total_hours
+                job2.save()
+        if selectedjob.name not in list(map(lambda x:x.name,worker1.jobchange.all())):
+            new = ChangeJob()
+            new.name = selectedjob.name
+            new.changehours = form_ins.total_hours
+            new.save()
+            worker1.jobchange.add(new)
         worker1.total_hours += form_ins.total_hours
         worker1.total_money += form_ins.total_hours * 20
         worker1.own += form_ins.total_hours * 20
         worker1.save()
-
-
-
-
-
 
 @staff_member_required
 def ReduceHrs1(request):
@@ -63,12 +68,16 @@ def ReduceHrs1(request):
             form.save_m2m()
             job1 = request.POST.get('job')
             selectedjob = job.objects.filter(id=job1)
+            minhour=selectedjob[0].total_hours
             for worker5 in newForm.workers.all():
                 if worker5 not in selectedjob[0].workers.all():
                     flag=1
-            if newForm.total_hours<=selectedjob[0].all_hours and len(newForm.workers.all())!=0 and flag==0:
+                for job5 in worker5.jobchange.all():
+                    if job5.name ==selectedjob[0].name:
+                        minhour=min(minhour,job5.changehours)
+            if newForm.total_hours<=selectedjob[0].total_hours and len(newForm.workers.all())!=0 and flag==0 and newForm.total_hours<=minhour:
                 error=""
-                updatehrs(newForm)
+                updatehrs(newForm,selectedjob[0])
                 totalreducehrs = newForm.total_hours * len(newForm.workers.all())
                 for jobb in selectedjob:
                     jobb.all_hours -= totalreducehrs
@@ -90,14 +99,26 @@ def ReduceHrs1(request):
             return render(request, 'reducehrs/reducehrs.html', {'jobs': jobs[::-1], "form": ReduceHrs(), "error": "Not Good"})
 
 
-def updatehrs(form_ins):
+def updatehrs(form_ins,selected):
     jobs = job.objects.filter(name=form_ins.name)
     for worker1 in jobs[0].workers.all():
         if worker1.total_hours-form_ins.total_hours>=0:
+            if selected.name not in list(map(lambda x: x.name,worker1.jobchange.all())):
+                new=ChangeJob()
+                new.name=selected.name
+                new.changehours=selected.total_hours-form_ins.total_hours
+                new.save()
+                worker1.jobchange.add(new)
+            else:
+                for work in worker1.jobchange.all():
+                    if work.name==selected.name:
+                        work.changehours-=form_ins.total_hours
+                        work.save()
             worker1.total_hours -= form_ins.total_hours
             worker1.total_money -= form_ins.total_hours * 20
             worker1.own -= form_ins.total_hours * 20
             worker1.save()
+            #new.delete()
 
 @staff_member_required
 def AddWorker(request):
@@ -120,22 +141,31 @@ def AddWorker(request):
 @staff_member_required
 def Job(request):
     jobs = job.objects.all()
+    error=""
     if request.method == "GET":
         return render(request, 'addwork/addwork.html',{'jobs':jobs,"form":JobForm()})
     elif request.method == "POST":
         form = JobForm(request.POST)
         if form.is_valid():
             newForm = form.save(commit=False)
-            newForm.save()
-            form.save_m2m()
-            updateall(newForm)
-            newForm.all_hours=len(newForm.workers.all()) * newForm.total_hours
-            newForm.total_amount = newForm.all_hours* newForm.Money_For_Hour
-            newForm.left = newForm.total_amount - newForm.money
-
-            newForm.save()
-
-            return redirect("addjob")
+            if newForm.name in list(map(lambda x:x.name,jobs)):
+                print(list(map(lambda x:x.name,jobs)))
+                error="קיימת כבר עבודה עם שם זה "
+                return render(request, 'addwork/addwork.html', {'jobs': jobs, "form": JobForm(), "error": error})
+            else:
+                newForm.save()
+                form.save_m2m()
+                if len(newForm.workers.all())>0:
+                    updateall(newForm)
+                    newForm.all_hours=len(newForm.workers.all()) * newForm.total_hours
+                    newForm.total_amount = newForm.all_hours* newForm.Money_For_Hour
+                    newForm.left = newForm.total_amount - newForm.money
+                    newForm.save()
+                    return render(request, 'addwork/addwork.html', {'jobs': jobs, "form": JobForm(), "error": error})
+                else:
+                    error="לא נבחרו עובדים"
+                    newForm.delete()
+                    return render(request, 'addwork/addwork.html', {'jobs': jobs, "form": JobForm(), "error": error})
         else:
             return render(request, 'addwork/addwork.html', {'jobs': jobs, "form": JobForm(),"error":"Not Good"})
 
@@ -146,6 +176,11 @@ def updateall(form_ins):
         worker1.total_hours += form_ins.total_hours
         worker1.total_money += form_ins.total_hours*20
         worker1.own += form_ins.total_hours * 20
+        new = ChangeJob()
+        new.name = form_ins.name
+        new.changehours = form_ins.total_hours
+        new.save()
+        worker1.jobchange.add(new)
         worker1.save()
 
 @staff_member_required
@@ -159,18 +194,25 @@ def updatepaymentforjob(request):
         res = []
         job1 = request.POST.get('job')
         amount= request.POST.get('amount')
-        for job2 in jobs:
-            if job2.id == int(job1):
-                job2.money+=int(amount)
-                job2.left=job2.total_amount-job2.money
-                job2.save()
-        return render(request, 'updatepayment/updatepaymentforjob.html',{"jobs":jobs[::-1],"switch": switch,"msg":"בוצע בהצלחה"})
+        if str(amount).isdigit():
+            for job2 in jobs:
+                if job2.id == int(job1):
+                    job2.money+=int(amount)
+                    job2.left=job2.total_amount-job2.money
+                    job2.save()
+            return render(request, 'updatepayment/updatepaymentforjob.html',
+                          {"jobs": jobs[::-1], "switch": switch, "msg": "בוצע בהצלחה"})
+
+        else:
+            msg="סכום שגוי , יש להכניס רק ספרות"
+            return render(request, 'updatepayment/updatepaymentforjob.html',{"jobs":jobs[::-1],"switch": switch,"msg":msg})
 
 
 
 @staff_member_required
 def Payment1(request):
     jobs = job.objects.all()
+    error=""
     if request.method == "GET":
         return render(request, 'payment/payment.html', {'jobs': jobs, "form": Payment()})
     elif request.method == "POST":
@@ -179,9 +221,12 @@ def Payment1(request):
             newForm = form.save(commit=False)
             newForm.save()
             form.save_m2m()
-            updatepayment(newForm)
+            if len(newForm.workers.all())>0:
+                updatepayment(newForm)
+            else:
+                error="לא נבחרו עובדים"
             newForm.delete()
-            return redirect("payment")
+            return render(request, 'payment/payment.html', {'jobs': jobs, "form": Payment(), "error": error})
         else:
             return render(request, 'payment/payment.html', {'jobs': jobs, "form": Payment(), "error": "Not Good"})
 

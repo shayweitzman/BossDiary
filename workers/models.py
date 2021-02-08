@@ -4,6 +4,12 @@ import datetime
 
 
 
+class ChangeJob(models.Model):
+    name = models.CharField(max_length=50,default=0)
+    changehours=models.FloatField(default=0, null=True, blank=True)
+    def __str__(self):
+        return self.name
+
 
 class Worker (models.Model):
     name = models.CharField(max_length=50,unique=True)
@@ -12,9 +18,14 @@ class Worker (models.Model):
     total_money = models.FloatField(default=0, null=True, blank=True)
     own = models.FloatField(default=0, null=True, blank=True)
     paid = models.FloatField(default=0, null=True, blank=True)
+    jobchange=models.ManyToManyField(ChangeJob,null=True,blank=True, related_name='jobchange')
 
     def __str__(self):
         return self.name
+
+
+
+
 
 
 class Payment(models.Model):
@@ -34,7 +45,7 @@ class Job(models.Model):
     money = models.FloatField(default=0, null=True, blank=True)
     total_amount = models.FloatField(default=0, null=True, blank=True)
     left = models.FloatField(default=0, null=True, blank=True)
-    Money_For_Hour=models.FloatField(default=40, null=True, blank=True)
+    Money_For_Hour=models.FloatField(default=40, null=False, blank=False)
 
     workers = models.ManyToManyField(Worker, blank=True, related_name='workerjobs')
 
